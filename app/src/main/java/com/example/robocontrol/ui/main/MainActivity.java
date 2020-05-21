@@ -22,6 +22,7 @@ import androidx.appcompat.app.AlertDialog;
 import com.example.robocontrol.R;
 import com.example.robocontrol.base.BaseActivity;
 import com.example.robocontrol.joystick.JoyStick;
+import com.example.robocontrol.navigation.Navigation;
 import com.example.robocontrol.ui.bluetooth.BluetoothActivity;
 import com.example.robocontrol.utils.AnimationHelpers;
 import com.example.robocontrol.utils.Callbacks;
@@ -165,8 +166,7 @@ public class MainActivity
     @Override
     public void connectBluetooth() {
         // Go to list device to connect
-        Intent intent = new Intent(MainActivity.this, BluetoothActivity.class);
-        startActivityForResult(intent, MainContract.CONNECT_DEVICE_REQ);
+        Navigation.toBluetoothConnecting(this, MainContract.CONNECT_DEVICE_REQ);
     }
 
     @Override
