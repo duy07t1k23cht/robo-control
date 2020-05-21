@@ -56,8 +56,4 @@ public class MainContract {
 
         void processJoystickMovement(MotionEvent motionEvent);
     }
-
-    interface Interactor {
-
-    }
 }
