@@ -3,4 +3,6 @@
     <string name="horn_press">Horn press</string>
     <string name="light_press">Light press</string>
     <string name="paired_devices">Paired devices</string>
+    <string name="voice_control">Voice controller</string>
+    <string name="input">Input:</string>
 </resources>

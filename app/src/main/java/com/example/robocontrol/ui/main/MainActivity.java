@@ -6,11 +6,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.os.PersistableBundle;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -21,9 +18,7 @@ import androidx.appcompat.app.AlertDialog;
 
 import com.example.robocontrol.R;
 import com.example.robocontrol.base.BaseActivity;
-import com.example.robocontrol.joystick.JoyStick;
 import com.example.robocontrol.navigation.Navigation;
-import com.example.robocontrol.ui.bluetooth.BluetoothActivity;
 import com.example.robocontrol.utils.AnimationHelpers;
 import com.example.robocontrol.utils.Callbacks;
 
@@ -36,7 +31,7 @@ public class MainActivity
         implements View.OnClickListener, MainContract.View {
 
     // View variables
-    private ImageButton btnMore, btnHelp, btnInfo, btnSwitch, btnBluetooth, btnHorn, btnLight, btnDrive, btnSpeed, btnSwapVert, btnSwapHoriz;
+    private ImageButton btnMore, btnHelp, btnInfo, btnSwitch, btnBluetooth, btnHorn, btnLight, btnDrive, btnSpeed, btnSwapVert, btnSwapHoriz, btnVoice;
     private TextView tvDrive, tvSpeed;
     private LinearLayout layoutControl, layoutSwap;
     private RelativeLayout layoutJoystick;
@@ -106,6 +101,7 @@ public class MainActivity
         btnHelp = findViewById(R.id.btn_help);
         btnInfo = findViewById(R.id.btn_info);
         btnSwitch = findViewById(R.id.btn_switch);
+        btnVoice = findViewById(R.id.btn_voice_control);
         btnBluetooth = findViewById(R.id.btn_bluetooth);
 
         btnSwapHoriz = findViewById(R.id.btn_swap_horiz);
@@ -133,6 +129,7 @@ public class MainActivity
         btnHelp.setOnClickListener(this);
         btnInfo.setOnClickListener(this);
         btnSwitch.setOnClickListener(this);
+        btnVoice.setOnClickListener(this);
         btnBluetooth.setOnClickListener(this);
 
         btnDrive.setOnClickListener(this);
@@ -241,14 +238,22 @@ public class MainActivity
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+
             // Button more
             case R.id.btn_more:
                 mPresenter.showHideMoreOption();
                 break;
+
             // Button switch mode
             case R.id.btn_switch:
                 mPresenter.switchControlMode();
                 break;
+
+            // Button Voice control
+            case R.id.btn_voice_control:
+                Navigation.toVoiceControl(this);
+                break;
+
             // Button bluetooth
             case R.id.btn_bluetooth:
                 if (mPresenter.isConnected) {
@@ -257,14 +262,17 @@ public class MainActivity
                     connectBluetooth();
                 }
                 break;
+
             // Button horn
             case R.id.btn_horn:
                 mPresenter.sendMessage("T");
                 break;
+
             // Button light
             case R.id.btn_light:
                 mPresenter.sendMessage("Y");
                 break;
+
             // Button drive
             case R.id.btn_drive:
                 mPresenter.sendMessage("n");
@@ -283,6 +291,7 @@ public class MainActivity
                     }
                 }.start();
                 break;
+
             // Button speed
             case R.id.btn_speed:
                 mPresenter.sendMessage("N");
@@ -301,10 +310,13 @@ public class MainActivity
                     }
                 }.start();
                 break;
+
             // Button Swap vert
             case R.id.btn_swap_ver:
                 mPresenter.sendMessage("U");
                 break;
+
+            // Button Swap horizontal
             case R.id.btn_swap_horiz:
                 mPresenter.sendMessage("O");
                 break;
