@@ -26,7 +26,6 @@ public class BluetoothActivity extends AppCompatActivity {
      * This is just a small and simple activity with very few of features, so I decided not to use MVP
      */
     private ListView lstDevices;
-    private ImageView ivBack;
 
     private BluetoothAdapter bluetoothAdapter;
     private ArrayList<String> deviceAddesses = new ArrayList<>();
@@ -52,7 +51,7 @@ public class BluetoothActivity extends AppCompatActivity {
 
     private void initViews() {
         // Back button
-        ivBack = findViewById(R.id.iv_back);
+        ImageView ivBack = findViewById(R.id.iv_back);
         ivBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -86,7 +85,7 @@ public class BluetoothActivity extends AppCompatActivity {
             deviceAddesses.add(bluetoothDevice.getAddress());
         }
 
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, deviceNames);
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_list_item_1, deviceNames);
         lstDevices.setAdapter(arrayAdapter);
     }
 
