@@ -15,6 +15,7 @@ public class MainContract {
 
     public final static int CONNECT_DEVICE_REQ = 123;
     public final static int ENABLE_BLUETOOTH_REQ = 456;
+
     public final static String DEVICE_ADDRESS = "DeviceAddress";
 
     interface View extends BaseView {
@@ -40,6 +41,8 @@ public class MainContract {
     }
 
     interface Presenter {
+        void setupBluetoothConnectListener();
+
         void checkBluetoothStatus();
 
         void showHideMoreOption();

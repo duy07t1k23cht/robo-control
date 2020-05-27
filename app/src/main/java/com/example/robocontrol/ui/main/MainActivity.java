@@ -55,6 +55,12 @@ public class MainActivity
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        mPresenter.setupBluetoothConnectListener();
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
