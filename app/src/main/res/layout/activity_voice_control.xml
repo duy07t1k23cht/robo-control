@@ -17,17 +17,17 @@
             android:id="@+id/iv_back"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="@dimen/_8dp"
             android:background="?attr/selectableItemBackground"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp"
+            android:paddingStart="@dimen/_8dp"
+            android:paddingEnd="@dimen/_8dp"
             android:src="@drawable/ic_back"
             android:tint="@android:color/white" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="8dp"
+            android:layout_margin="@dimen/_8dp"
             android:gravity="center"
             android:text="@string/voice_control"
             android:textColor="@android:color/white"
@@ -43,23 +43,23 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginStart="48dp"
+            android:layout_marginStart="@dimen/_48dp"
             android:layout_marginEnd="96dp"
             android:background="@drawable/bg_corner"
             android:orientation="vertical"
-            android:padding="24dp">
+            android:padding="@dimen/_24dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="4dp"
+                android:layout_margin="@dimen/_4dp"
                 android:orientation="horizontal"
-                android:padding="4dp">
+                android:padding="@dimen/_4dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
+                    android:layout_marginEnd="@dimen/_8dp"
                     android:text="@string/input"
                     android:textColor="#FFC107"
                     android:textSize="21sp" />
@@ -76,14 +76,14 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="4dp"
+                android:layout_margin="@dimen/_4dp"
                 android:orientation="horizontal"
-                android:padding="4dp">
+                android:padding="@dimen/_4dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
+                    android:layout_marginEnd="@dimen/_8dp"
                     android:text="@string/input"
                     android:textColor="#FFC107"
                     android:textSize="21sp" />
@@ -99,14 +99,14 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="4dp"
+                android:layout_margin="@dimen/_4dp"
                 android:orientation="horizontal"
-                android:padding="4dp">
+                android:padding="@dimen/_4dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
+                    android:layout_marginEnd="@dimen/_8dp"
                     android:text="@string/input"
                     android:textColor="#FFC107"
                     android:textSize="21sp" />
@@ -126,9 +126,9 @@
             android:layout_width="96dp"
             android:layout_height="96dp"
             android:layout_gravity="center_vertical|end"
-            android:layout_marginEnd="48dp"
+            android:layout_marginEnd="@dimen/_48dp"
             android:background="@drawable/bg_button_speech"
-            android:padding="24dp"
+            android:padding="@dimen/_24dp"
             android:src="@drawable/ic_voice_big" />
 
         <ToggleButton
@@ -137,7 +137,7 @@
             android:layout_width="96dp"
             android:layout_height="96dp"
             android:layout_gravity="center_vertical|end"
-            android:layout_marginEnd="48dp"
+            android:layout_marginEnd="@dimen/_48dp"
             android:background="#00000000" />
 
     </FrameLayout>

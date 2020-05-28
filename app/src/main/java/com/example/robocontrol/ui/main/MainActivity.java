@@ -283,7 +283,7 @@ public class MainActivity
             case R.id.btn_drive:
                 mPresenter.sendMessage("n");
                 disableButtons(btnDrive);
-                new CountDownTimer(2999, 1000) {
+                new CountDownTimer(2999, 100) {
                     @Override
                     public void onTick(long millisUntilFinished) {
                         tvDrive.setVisibility(View.VISIBLE);
@@ -302,7 +302,7 @@ public class MainActivity
             case R.id.btn_speed:
                 mPresenter.sendMessage("N");
                 disableButtons(btnSpeed);
-                new CountDownTimer(2999, 1000) {
+                new CountDownTimer(2999, 100) {
                     @Override
                     public void onTick(long millisUntilFinished) {
                         tvSpeed.setVisibility(View.VISIBLE);
