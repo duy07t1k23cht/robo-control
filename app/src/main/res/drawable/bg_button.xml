@@ -2,10 +2,10 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:bottom="12dp"
-        android:left="12dp"
-        android:right="12dp"
-        android:top="12dp">
+        android:bottom="@dimen/_12dp"
+        android:left="@dimen/_12dp"
+        android:right="@dimen/_12dp"
+        android:top="@dimen/_12dp">
         <shape android:shape="oval">
             <solid android:color="#bb3F51B5 " />
             <!--shadow Color-->
@@ -13,10 +13,10 @@
     </item>
 
     <item
-        android:bottom="24dp"
-        android:left="24dp"
-        android:right="24dp"
-        android:top="24dp">
+        android:bottom="@dimen/_24dp"
+        android:left="@dimen/_24dp"
+        android:right="@dimen/_24dp"
+        android:top="@dimen/_24dp">
         <shape android:shape="oval">
             <solid android:color="#3F51B5" />
         </shape>

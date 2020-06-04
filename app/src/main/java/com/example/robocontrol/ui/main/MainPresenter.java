@@ -1,11 +1,8 @@
 package com.example.robocontrol.ui.main;
 
-import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
-import android.bluetooth.BluetoothSocket;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -13,17 +10,12 @@ import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 
-import com.example.robocontrol.R;
 import com.example.robocontrol.base.BasePresenter;
 import com.example.robocontrol.joystick.JoyStick;
+import com.example.robocontrol.utils.BluetoothUtils;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.Set;
-import java.util.UUID;
 
 /**
  * Created by Duy M. Nguyen on 5/14/2020.
@@ -35,8 +27,8 @@ public class MainPresenter extends BasePresenter<MainContract.View> implements M
     private final static int STATE_CONNECTION_FAILED = 12;
     private final static int STATE_DISCONNECTED = 13;
 
-    private BluetoothAdapter bluetoothAdapter;
-    private ConnectThread connectThread;
+//    private BluetoothAdapter bluetoothAdapter;
+//    private ConnectThread connectThread;
 
     private JoyStick joyStick;
 
@@ -46,17 +38,33 @@ public class MainPresenter extends BasePresenter<MainContract.View> implements M
 
     private boolean isShowingMoreOption = false;
     public boolean isConnected = false;
+
     private ControlMode controlMode = ControlMode.MODE_1;
 
     @Override
+    public void setupBluetoothConnectListener() {
+        BluetoothUtils.onConnectStatusChangeListener = new BluetoothUtils.OnConnectStatusChangeListener() {
+            @Override
+            public void onConnectStatusChange(BluetoothUtils.ConnectStatus connectStatus) {
+                if (connectStatus == BluetoothUtils.ConnectStatus.STATE_CONNECTED) {
+                    updateStatus(STATE_CONNECTED);
+                } else if (connectStatus == BluetoothUtils.ConnectStatus.STATE_DISCONNECTED) {
+                    updateStatus(STATE_DISCONNECTED);
+                } else if (connectStatus == BluetoothUtils.ConnectStatus.STATE_CONNECTION_FAILED) {
+                    updateStatus(STATE_CONNECTION_FAILED);
+                }
+            }
+        };
+    }
+
+    @Override
     public void checkBluetoothStatus() {
-        bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        if (bluetoothAdapter == null) {
+        if (BluetoothUtils.deviceNotSupportBluetooth()) {
             mView.showMessage("This device does not support bluetooth");
             return;
         }
 
-        if (!bluetoothAdapter.isEnabled()) {
+        if (BluetoothUtils.isOff()) {
             mView.enableBluetooth();
         }
     }
@@ -112,7 +120,7 @@ public class MainPresenter extends BasePresenter<MainContract.View> implements M
 
                 float goldenRatio = 2.8f;
 
-                int joyStickSize = (int) (Math.min(width, height) * 0.85f);
+                int joyStickSize = (int) (Math.min(width, height) * 0.65f);
 
                 int stickSize = (int) ((float) joyStickSize / goldenRatio);
 
@@ -128,183 +136,98 @@ public class MainPresenter extends BasePresenter<MainContract.View> implements M
 
     @Override
     public void connectToDevice(String deviceAddress) {
-        mView.showMessage("Connecting...");
-        Set<BluetoothDevice> pairedDevice = bluetoothAdapter.getBondedDevices();
+        updateStatus(STATE_CONNECTING);
+        Set<BluetoothDevice> pairedDevice = BluetoothUtils.getPairedDevices();
         for (BluetoothDevice bluetoothDevice : pairedDevice) {
             if (bluetoothDevice.getAddress().equals(deviceAddress)) {
-                connectThread = new ConnectThread(bluetoothDevice);
-                connectThread.start();
+                BluetoothUtils.connectToDevice(bluetoothDevice);
             }
         }
     }
 
     @Override
     public void sendMessage(String character) {
-        if (connectThread != null)
-            connectThread.sendCharacter(character);
+        BluetoothUtils.sendMessage(character);
     }
 
     @Override
     public void disconnect() {
-        if (connectThread != null) {
-            connectThread.cancel();
-        }
+        BluetoothUtils.disconnect();
     }
+
+//    @Override
+//    public void processJoystickMovement(MotionEvent motionEvent) {
+//        joyStick.drawStick(motionEvent);
+//        if (motionEvent.getAction() == MotionEvent.ACTION_DOWN || motionEvent.getAction() == MotionEvent.ACTION_MOVE) {
+//            int direction = joyStick.get8Direction();
+//            switch (direction) {
+//                case JoyStick.STICK_UP:
+//                    sendMessage("F");
+//                    break;
+//                case JoyStick.STICK_UPRIGHT:
+//                    sendMessage("M");
+//                    break;
+//                case JoyStick.STICK_RIGHT:
+//                    sendMessage("R");
+//                    break;
+//                case JoyStick.STICK_DOWNRIGHT:
+//                    sendMessage("P");
+//                    break;
+//                case JoyStick.STICK_DOWN:
+//                    sendMessage("B");
+//                    break;
+//                case JoyStick.STICK_DOWNLEFT:
+//                    sendMessage("E");
+//                    break;
+//                case JoyStick.STICK_LEFT:
+//                    sendMessage("L");
+//                    break;
+//                case JoyStick.STICK_UPLEFT:
+//                    sendMessage("C");
+//                    break;
+//
+//            }
+//        } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+//            int direction = joyStick.get8Direction();
+//            if (direction == JoyStick.STICK_NONE) {
+//                sendMessage("S");
+//            }
+//        }
+//    }
+
 
     @Override
-    public void processJoystickMovement(MotionEvent motionEvent) {
-        joyStick.drawStick(motionEvent);
-        if (motionEvent.getAction() == MotionEvent.ACTION_DOWN || motionEvent.getAction() == MotionEvent.ACTION_MOVE) {
-            int direction = joyStick.get8Direction();
-            switch (direction) {
-                case JoyStick.STICK_UP:
-                    sendMessage("F");
-                    break;
-                case JoyStick.STICK_UPRIGHT:
-                    sendMessage("M");
-                    break;
-                case JoyStick.STICK_RIGHT:
-                    sendMessage("R");
-                    break;
-                case JoyStick.STICK_DOWNRIGHT:
-                    sendMessage("P");
-                    break;
-                case JoyStick.STICK_DOWN:
-                    sendMessage("B");
-                    break;
-                case JoyStick.STICK_DOWNLEFT:
-                    sendMessage("E");
-                    break;
-                case JoyStick.STICK_LEFT:
-                    sendMessage("L");
-                    break;
-                case JoyStick.STICK_UPLEFT:
-                    sendMessage("C");
-                    break;
-
-            }
-        } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
-            int direction = joyStick.get8Direction();
-            if (direction == JoyStick.STICK_NONE) {
-                sendMessage("S");
-            }
+    public void processJoystickMovement(int angle, int strength) {
+        if (angle > 0 && angle < 22) {
+            sendMessage("R");
         }
-    }
-
-    private class ConnectThread extends Thread {
-        private final BluetoothSocket mmSocket;
-        private final BluetoothDevice mmDevice;
-
-        public ConnectThread(BluetoothDevice device) {
-            // Use a temporary object that is later assigned to mmSocket
-            // because mmSocket is final.
-            BluetoothSocket tmp = null;
-            mmDevice = device;
-
-            try {
-                // Get a BluetoothSocket to connect with the given BluetoothDevice.
-                // MY_UUID is the app's UUID string, also used in the server code.
-                Method m = device.getClass().getMethod("createRfcommSocket", int.class);
-                tmp = (BluetoothSocket) m.invoke(device, 1);
-            } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-                e.printStackTrace();
-            }
-            mmSocket = tmp;
+        if (angle == 0) {
+            sendMessage("S");
         }
-
-        public void run() {
-            // Cancel discovery because it otherwise slows down the connection.
-            bluetoothAdapter.cancelDiscovery();
-
-            try {
-                // Connect to the remote device through the socket. This call blocks
-                // until it succeeds or throws an exception.
-                mmSocket.connect();
-            } catch (IOException connectException) {
-                // Unable to connect; close the socket and return.
-                updateStatus(STATE_CONNECTION_FAILED);
-                try {
-                    mmSocket.close();
-                } catch (IOException closeException) {
-                    closeException.printStackTrace();
-                }
-                return;
-            }
-
-            // The connection attempt succeeded. Perform work associated with
-            // the connection in a separate thread.
-            updateStatus(STATE_CONNECTED);
+        if (angle >= 22 && angle < 67) {
+            sendMessage("M");
         }
-
-        // Closes the client socket and causes the thread to finish.
-        public void cancel() {
-            updateStatus(STATE_DISCONNECTED);
-            try {
-                mmSocket.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        if (angle >= 67 && angle < 112) {
+            sendMessage("F");
         }
-
-        public void sendCharacter(String character) {
-            if (mmSocket != null) {
-                try {
-                    mmSocket.getOutputStream().write(character.toString().getBytes());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+        if (angle >= 112 && angle < 157) {
+            sendMessage("C");
         }
-    }
-
-    private class SendReceive extends Thread {
-        private final BluetoothSocket bluetoothSocket;
-        private final InputStream inputStream;
-        private final OutputStream outputStream;
-
-        public SendReceive(BluetoothSocket bluetoothSocket) {
-            this.bluetoothSocket = bluetoothSocket;
-            InputStream tempIn = null;
-            OutputStream tempOut = null;
-
-            try {
-                tempIn = this.bluetoothSocket.getInputStream();
-                tempOut = this.bluetoothSocket.getOutputStream();
-            } catch (IOException e) {
-                e.printStackTrace();
-                Log.e("__E", e.getMessage());
-            }
-
-            inputStream = tempIn;
-            outputStream = tempOut;
+        if (angle >= 157 && angle < 202) {
+            sendMessage("L");
         }
-
-        @Override
-        public void run() {
-            byte[] buffer = new byte[1024];
-            int bytes;
-
-            while (true) {
-                try {
-                    bytes = inputStream.read(buffer);
-//                    handler
-//                            .obtainMessage(STATE_MESSAGE_RECEIVED, bytes, -1, buffer)
-//                            .sendToTarget();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    Log.e("__E", "SendReceive.run()\n" + e.getMessage());
-                }
-            }
+        if (angle >= 202 && angle < 250) {
+            sendMessage("E");
         }
-
-        Handler handler = new Handler(new Handler.Callback() {
-            @Override
-            public boolean handleMessage(@NonNull Message msg) {
-
-//            String character = msg.what;
-                return false;
-            }
-        });
+        if (angle >= 250 && angle < 295) {
+            sendMessage("B");
+        }
+        if (angle >= 295 && angle < 330) {
+            sendMessage("P");
+        }
+        if (angle >= 330 && angle < 360) {
+            sendMessage("R");
+        }
     }
 
     Handler handler = new Handler(new Handler.Callback() {

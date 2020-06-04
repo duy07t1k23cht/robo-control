@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="8dp"
+    android:padding="@dimen/_8dp"
     tools:context=".ui.bluetooth.BluetoothActivity">
 
     <LinearLayout
@@ -18,14 +18,14 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:background="?attr/selectableItemBackground"
-            android:paddingStart="4dp"
-            android:paddingEnd="4dp"
+            android:paddingStart="@dimen/_4dp"
+            android:paddingEnd="@dimen/_4dp"
             android:src="@drawable/ic_back" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="8dp"
+            android:layout_margin="@dimen/_8dp"
             android:gravity="center_vertical"
             android:text="@string/paired_devices"
             android:textColor="@android:color/black"
@@ -37,6 +37,6 @@
         android:id="@+id/lst_devices"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="8dp" />
+        android:layout_margin="@dimen/_8dp" />
 
 </LinearLayout>
