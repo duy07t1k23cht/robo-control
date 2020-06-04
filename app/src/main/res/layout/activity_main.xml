@@ -90,46 +90,50 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="@dimen/_8dp"
-        android:paddingStart="@dimen/_32dp"
-        android:paddingEnd="@dimen/_32dp">
+        android:gravity="center">
 
-        <RelativeLayout
-            android:id="@+id/layout_joystick"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+        <io.github.controlwear.virtual.joystick.android.JoystickView
+            android:id="@+id/joystickView"
+            android:layout_width="@dimen/_220dp"
+            android:layout_height="@dimen/_220dp"
             android:layout_centerVertical="true"
-            android:layout_toStartOf="@id/layout_right_control"
-            android:background="@drawable/bg_button" />
+            android:layout_marginStart="@dimen/_32dp"
+            android:layout_marginEnd="@dimen/_32dp"
+            android:background="@drawable/anh2"
+            app:JV_backgroundSizeRatio="45%"
+            app:JV_buttonImage="@drawable/anh15"
+            app:JV_buttonSizeRatio="40%"
+            app:JV_fixedCenter="false" />
 
         <RelativeLayout
             android:id="@+id/layout_right_control"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_alignParentEnd="true"
-            android:gravity="center"
-            android:paddingStart="@dimen/_32dp"
-            android:paddingEnd="@dimen/_32dp">
+            android:layout_marginEnd="@dimen/_32dp"
+            android:layout_toEndOf="@id/joystickView"
+            android:gravity="center_vertical|end">
 
             <LinearLayout
                 android:id="@+id/layout_action"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
                 android:layout_marginTop="@dimen/_24dp"
                 android:orientation="horizontal">
 
                 <ImageButton
                     android:id="@+id/btn_light"
-                    android:layout_width="@dimen/_140dp"
-                    android:layout_height="@dimen/_140dp"
+                    android:layout_width="@dimen/_120dp"
+                    android:layout_height="@dimen/_120dp"
                     android:layout_marginEnd="@dimen/_36dp"
                     android:background="@drawable/button_background_border"
                     android:src="@drawable/ic_lightbulb_big" />
 
                 <ImageButton
                     android:id="@+id/btn_horn"
-                    android:layout_width="@dimen/_140dp"
-                    android:layout_height="@dimen/_140dp"
+                    android:layout_width="@dimen/_120dp"
+                    android:layout_height="@dimen/_120dp"
                     android:background="@drawable/button_background_border"
                     android:src="@drawable/ic_volume_big" />
             </LinearLayout>

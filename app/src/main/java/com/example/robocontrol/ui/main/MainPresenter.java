@@ -14,6 +14,7 @@ import com.example.robocontrol.base.BasePresenter;
 import com.example.robocontrol.joystick.JoyStick;
 import com.example.robocontrol.utils.BluetoothUtils;
 
+import java.io.IOException;
 import java.util.Set;
 
 /**
@@ -119,7 +120,7 @@ public class MainPresenter extends BasePresenter<MainContract.View> implements M
 
                 float goldenRatio = 2.8f;
 
-                int joyStickSize = (int) (Math.min(width, height) * 0.85f);
+                int joyStickSize = (int) (Math.min(width, height) * 0.65f);
 
                 int stickSize = (int) ((float) joyStickSize / goldenRatio);
 
@@ -154,46 +155,80 @@ public class MainPresenter extends BasePresenter<MainContract.View> implements M
         BluetoothUtils.disconnect();
     }
 
-    @Override
-    public void processJoystickMovement(MotionEvent motionEvent) {
-        joyStick.drawStick(motionEvent);
-        if (motionEvent.getAction() == MotionEvent.ACTION_DOWN || motionEvent.getAction() == MotionEvent.ACTION_MOVE) {
-            int direction = joyStick.get8Direction();
-            switch (direction) {
-                case JoyStick.STICK_UP:
-                    sendMessage("F");
-                    break;
-                case JoyStick.STICK_UPRIGHT:
-                    sendMessage("M");
-                    break;
-                case JoyStick.STICK_RIGHT:
-                    sendMessage("R");
-                    break;
-                case JoyStick.STICK_DOWNRIGHT:
-                    sendMessage("P");
-                    break;
-                case JoyStick.STICK_DOWN:
-                    sendMessage("B");
-                    break;
-                case JoyStick.STICK_DOWNLEFT:
-                    sendMessage("E");
-                    break;
-                case JoyStick.STICK_LEFT:
-                    sendMessage("L");
-                    break;
-                case JoyStick.STICK_UPLEFT:
-                    sendMessage("C");
-                    break;
+//    @Override
+//    public void processJoystickMovement(MotionEvent motionEvent) {
+//        joyStick.drawStick(motionEvent);
+//        if (motionEvent.getAction() == MotionEvent.ACTION_DOWN || motionEvent.getAction() == MotionEvent.ACTION_MOVE) {
+//            int direction = joyStick.get8Direction();
+//            switch (direction) {
+//                case JoyStick.STICK_UP:
+//                    sendMessage("F");
+//                    break;
+//                case JoyStick.STICK_UPRIGHT:
+//                    sendMessage("M");
+//                    break;
+//                case JoyStick.STICK_RIGHT:
+//                    sendMessage("R");
+//                    break;
+//                case JoyStick.STICK_DOWNRIGHT:
+//                    sendMessage("P");
+//                    break;
+//                case JoyStick.STICK_DOWN:
+//                    sendMessage("B");
+//                    break;
+//                case JoyStick.STICK_DOWNLEFT:
+//                    sendMessage("E");
+//                    break;
+//                case JoyStick.STICK_LEFT:
+//                    sendMessage("L");
+//                    break;
+//                case JoyStick.STICK_UPLEFT:
+//                    sendMessage("C");
+//                    break;
+//
+//            }
+//        } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+//            int direction = joyStick.get8Direction();
+//            if (direction == JoyStick.STICK_NONE) {
+//                sendMessage("S");
+//            }
+//        }
+//    }
 
-            }
-        } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
-            int direction = joyStick.get8Direction();
-            if (direction == JoyStick.STICK_NONE) {
-                sendMessage("S");
-            }
+
+    @Override
+    public void processJoystickMovement(int angle, int strength) {
+        if (angle > 0 && angle < 22) {
+            sendMessage("R");
+        }
+        if (angle == 0) {
+            sendMessage("S");
+        }
+        if (angle >= 22 && angle < 67) {
+            sendMessage("M");
+        }
+        if (angle >= 67 && angle < 112) {
+            sendMessage("F");
+        }
+        if (angle >= 112 && angle < 157) {
+            sendMessage("C");
+        }
+        if (angle >= 157 && angle < 202) {
+            sendMessage("L");
+        }
+        if (angle >= 202 && angle < 250) {
+            sendMessage("E");
+        }
+        if (angle >= 250 && angle < 295) {
+            sendMessage("B");
+        }
+        if (angle >= 295 && angle < 330) {
+            sendMessage("P");
+        }
+        if (angle >= 330 && angle < 360) {
+            sendMessage("R");
         }
     }
-
 
     Handler handler = new Handler(new Handler.Callback() {
         @Override

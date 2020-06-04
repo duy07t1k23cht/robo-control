@@ -1,5 +1,6 @@
 package com.example.robocontrol.ui.voicecontrol;
 
+import android.app.Activity;
 import android.content.Context;
 
 import com.example.robocontrol.base.BaseView;
@@ -10,6 +11,7 @@ import com.example.robocontrol.base.BaseView;
 public class VoiceControlContract {
 
     public final static int REQUEST_RECORD_PERMISSION = 123;
+    public final static int REQUEST_SPEECH_INPUT = 124;
 
     interface View extends BaseView {
         void startListening();
@@ -25,6 +27,8 @@ public class VoiceControlContract {
         void createSpeechRecognizer(Context context);
 
         void setupRecognizer(Context context);
+
+        void startListening(Activity activity);
 
         void startListening();
 

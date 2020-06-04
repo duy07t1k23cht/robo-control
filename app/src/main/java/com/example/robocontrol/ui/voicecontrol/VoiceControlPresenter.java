@@ -1,5 +1,7 @@
 package com.example.robocontrol.ui.voicecontrol;
 
+import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,18 +10,19 @@ import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
 import android.util.Log;
 
+import com.example.robocontrol.R;
 import com.example.robocontrol.base.BasePresenter;
 import com.example.robocontrol.utils.BluetoothUtils;
 
 import java.util.ArrayList;
 import java.util.Locale;
 
+import static com.example.robocontrol.ui.voicecontrol.VoiceControlContract.REQUEST_SPEECH_INPUT;
+
 /**
  * Created by Duy M. Nguyen on 5/23/2020.
  */
 public class VoiceControlPresenter extends BasePresenter<VoiceControlContract.View> implements VoiceControlContract.Presenter, RecognitionListener {
-
-    private VoiceControlInteractor interactor = new VoiceControlInteractor();
 
     private SpeechRecognizer speech = null;
     private Intent recognizerIntent;
@@ -45,12 +48,12 @@ public class VoiceControlPresenter extends BasePresenter<VoiceControlContract.Vi
         String language = "en";
 
         recognizerIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-        recognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_PREFERENCE, "en");
+        recognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_PREFERENCE, Locale.SIMPLIFIED_CHINESE);
         recognizerIntent.putExtra(
                 RecognizerIntent.EXTRA_LANGUAGE_MODEL,
                 RecognizerIntent.LANGUAGE_MODEL_FREE_FORM
         );
-        recognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "en");
+        recognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.SIMPLIFIED_CHINESE);
 
 //        recognizerIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
 //        recognizerIntent.putExtra("android.speech.extra.EXTRA_ADDITIONAL_LANGUAGES", new String[]{});
@@ -64,9 +67,23 @@ public class VoiceControlPresenter extends BasePresenter<VoiceControlContract.Vi
     }
 
     @Override
+    public void startListening(Activity activity) {
+        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
+        intent.putExtra(RecognizerIntent.EXTRA_PROMPT, activity.getString(R.string.app_name));
+        try {
+            activity.startActivityForResult(intent, REQUEST_SPEECH_INPUT);
+        } catch (ActivityNotFoundException a) {
+            mView.showMessage("Error");
+        }
+    }
+
+    @Override
     public void startListening() {
         if (speech != null) {
             mView.showMessage("Start listening");
+            mView.displaySpeechText("Listening...");
             speech.startListening(recognizerIntent);
         }
     }
@@ -121,24 +138,18 @@ public class VoiceControlPresenter extends BasePresenter<VoiceControlContract.Vi
     public void onResults(Bundle results) {
         Log.d("__SP__", "onResults");
         ArrayList<String> matches = results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
-        StringBuilder text = new StringBuilder();
-        if (matches != null) {
-            for (String result : matches)
-                text.append(result).append("\n");
-        }
+        String text = matches != null ? matches.get(0) : "";
+//        StringBuilder text = new StringBuilder();
+//        if (matches != null) {
+//            for (String result : matches)
+//                text.append(result).append("\n");
+//        }
         mView.displaySpeechText(text.toString().trim());
     }
 
     @Override
     public void onPartialResults(Bundle partialResults) {
-        Log.d("__SP__", "onResults");
-        ArrayList<String> matches = partialResults.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
-        StringBuilder text = new StringBuilder();
-        if (matches != null) {
-            for (String result : matches)
-                text.append(result).append("\n");
-        }
-        mView.displaySpeechText(text.toString().trim());
+        Log.d("__SP__", "onPartialResults");
     }
 
     @Override

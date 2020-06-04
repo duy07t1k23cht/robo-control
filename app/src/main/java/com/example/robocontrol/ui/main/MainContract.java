@@ -57,6 +57,7 @@ public class MainContract {
 
         void setupJoystick(ViewGroup viewGroup, @DrawableRes int stickDrawable);
 
-        void processJoystickMovement(MotionEvent motionEvent);
+        void processJoystickMovement(int angle, int strength);
+//        void processJoystickMovement(MotionEvent motionEvent);
     }
 }

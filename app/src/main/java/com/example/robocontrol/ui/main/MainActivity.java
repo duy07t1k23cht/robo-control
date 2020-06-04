@@ -22,6 +22,8 @@ import com.example.robocontrol.navigation.Navigation;
 import com.example.robocontrol.utils.AnimationHelpers;
 import com.example.robocontrol.utils.Callbacks;
 
+import io.github.controlwear.virtual.joystick.android.JoystickView;
+
 import static com.example.robocontrol.utils.ViewUtils.hide;
 import static com.example.robocontrol.utils.ViewUtils.show;
 import static com.example.robocontrol.utils.ViewUtils.toast;
@@ -34,7 +36,7 @@ public class MainActivity
     private ImageButton btnMore, btnHelp, btnInfo, btnSwitch, btnBluetooth, btnHorn, btnLight, btnDrive, btnSpeed, btnSwapVert, btnSwapHoriz, btnVoice;
     private TextView tvDrive, tvSpeed;
     private LinearLayout layoutControl, layoutSwap;
-    private RelativeLayout layoutJoystick;
+    private JoystickView layoutJoystick;
 
     @Override
     protected int getLayoutID() {
@@ -50,7 +52,6 @@ public class MainActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mPresenter.setupJoystick(layoutJoystick, R.drawable.bg_stick);
         mPresenter.checkBluetoothStatus();
     }
 
@@ -125,7 +126,7 @@ public class MainActivity
         layoutControl = findViewById(R.id.layout_control);
         layoutSwap = findViewById(R.id.layout_swap);
 
-        layoutJoystick = findViewById(R.id.layout_joystick);
+        layoutJoystick = findViewById(R.id.joystickView);
     }
 
     @Override
@@ -147,12 +148,19 @@ public class MainActivity
         btnHorn.setOnClickListener(this);
         btnLight.setOnClickListener(this);
 
-        layoutJoystick.setOnTouchListener(new View.OnTouchListener() {
-            public boolean onTouch(View arg0, MotionEvent arg1) {
-                mPresenter.processJoystickMovement(arg1);
-                return true;
+        layoutJoystick.setOnMoveListener(new JoystickView.OnMoveListener() {
+            @Override
+            public void onMove(int angle, int strength) {
+                mPresenter.processJoystickMovement(angle, strength);
             }
         });
+
+//        layoutJoystick.setOnTouchListener(new View.OnTouchListener() {
+//            public boolean onTouch(View arg0, MotionEvent arg1) {
+//                mPresenter.processJoystickMovement(arg1);
+//                return true;
+//            }
+//        });
     }
 
     @Override

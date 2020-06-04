@@ -1,9 +1,11 @@
 package com.example.robocontrol.ui.voicecontrol;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.PersistableBundle;
+import android.speech.RecognizerIntent;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
@@ -17,6 +19,8 @@ import androidx.core.app.ActivityCompat;
 
 import com.example.robocontrol.R;
 import com.example.robocontrol.base.BaseActivity;
+
+import java.util.ArrayList;
 
 import static com.example.robocontrol.utils.ViewUtils.toast;
 
@@ -77,10 +81,29 @@ public class VoiceControlActivity extends BaseActivity<VoiceControlPresenter> im
         switch (requestCode) {
             case VoiceControlContract.REQUEST_RECORD_PERMISSION:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    mPresenter.startListening();
+                    mPresenter.startListening(VoiceControlActivity.this);
                 } else {
                     showMessage("Permission Denied!");
                 }
+                break;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch (requestCode) {
+            case VoiceControlContract.REQUEST_SPEECH_INPUT:
+                mPresenter.stopListening();
+                if (resultCode == RESULT_OK && data != null) {
+                    ArrayList<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+                    if (result != null)
+                        displaySpeechText(result.get(0));
+                    else
+                        displaySpeechText("Null result");
+                }
+                break;
         }
     }
 
