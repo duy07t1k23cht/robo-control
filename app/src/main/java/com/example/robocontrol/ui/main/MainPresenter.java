@@ -3,18 +3,12 @@ package com.example.robocontrol.ui.main;
 import android.bluetooth.BluetoothDevice;
 import android.os.Handler;
 import android.os.Message;
-import android.view.MotionEvent;
-import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
-import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 
 import com.example.robocontrol.base.BasePresenter;
-import com.example.robocontrol.joystick.JoyStick;
 import com.example.robocontrol.utils.BluetoothUtils;
 
-import java.io.IOException;
 import java.util.Set;
 
 /**
@@ -26,11 +20,6 @@ public class MainPresenter extends BasePresenter<MainContract.View> implements M
     private final static int STATE_CONNECTED = 11;
     private final static int STATE_CONNECTION_FAILED = 12;
     private final static int STATE_DISCONNECTED = 13;
-
-//    private BluetoothAdapter bluetoothAdapter;
-//    private ConnectThread connectThread;
-
-    private JoyStick joyStick;
 
     private enum ControlMode {
         MODE_1, MODE_2
@@ -101,40 +90,6 @@ public class MainPresenter extends BasePresenter<MainContract.View> implements M
     }
 
     @Override
-    public void setupJoystick(final ViewGroup viewGroup, final int stickDrawable) {
-        joyStick = new JoyStick(viewGroup.getContext(), viewGroup, stickDrawable);
-        viewGroup.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                int width = viewGroup.getMeasuredWidth();
-                int height = viewGroup.getMeasuredHeight();
-                viewGroup.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-
-                RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) viewGroup.getLayoutParams();
-
-                params.addRule(RelativeLayout.ALIGN_PARENT_START);
-                params.removeRule(RelativeLayout.LEFT_OF);
-                params.removeRule(RelativeLayout.START_OF);
-
-                viewGroup.setLayoutParams(params);
-
-                float goldenRatio = 2.8f;
-
-                int joyStickSize = (int) (Math.min(width, height) * 0.65f);
-
-                int stickSize = (int) ((float) joyStickSize / goldenRatio);
-
-                joyStick.setStickSize(stickSize, stickSize);
-                joyStick.setLayoutSize(joyStickSize, joyStickSize);
-                joyStick.setLayoutAlpha(255);
-                joyStick.setStickAlpha(255);
-                joyStick.setOffset(stickSize / 2);
-                joyStick.setMinimumDistance(50);
-            }
-        });
-    }
-
-    @Override
     public void connectToDevice(String deviceAddress) {
         updateStatus(STATE_CONNECTING);
         Set<BluetoothDevice> pairedDevice = BluetoothUtils.getPairedDevices();
@@ -154,47 +109,6 @@ public class MainPresenter extends BasePresenter<MainContract.View> implements M
     public void disconnect() {
         BluetoothUtils.disconnect();
     }
-
-//    @Override
-//    public void processJoystickMovement(MotionEvent motionEvent) {
-//        joyStick.drawStick(motionEvent);
-//        if (motionEvent.getAction() == MotionEvent.ACTION_DOWN || motionEvent.getAction() == MotionEvent.ACTION_MOVE) {
-//            int direction = joyStick.get8Direction();
-//            switch (direction) {
-//                case JoyStick.STICK_UP:
-//                    sendMessage("F");
-//                    break;
-//                case JoyStick.STICK_UPRIGHT:
-//                    sendMessage("M");
-//                    break;
-//                case JoyStick.STICK_RIGHT:
-//                    sendMessage("R");
-//                    break;
-//                case JoyStick.STICK_DOWNRIGHT:
-//                    sendMessage("P");
-//                    break;
-//                case JoyStick.STICK_DOWN:
-//                    sendMessage("B");
-//                    break;
-//                case JoyStick.STICK_DOWNLEFT:
-//                    sendMessage("E");
-//                    break;
-//                case JoyStick.STICK_LEFT:
-//                    sendMessage("L");
-//                    break;
-//                case JoyStick.STICK_UPLEFT:
-//                    sendMessage("C");
-//                    break;
-//
-//            }
-//        } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
-//            int direction = joyStick.get8Direction();
-//            if (direction == JoyStick.STICK_NONE) {
-//                sendMessage("S");
-//            }
-//        }
-//    }
-
 
     @Override
     public void processJoystickMovement(int angle, int strength) {
