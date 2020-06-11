@@ -93,10 +93,9 @@
 
         <io.github.controlwear.virtual.joystick.android.JoystickView
             android:id="@+id/joystickView"
-            android:layout_width="@dimen/_220dp"
-            android:layout_height="@dimen/_220dp"
+            android:layout_width="@dimen/_240dp"
+            android:layout_height="@dimen/_240dp"
             android:layout_centerVertical="true"
-            android:layout_marginStart="@dimen/_32dp"
             android:background="@drawable/anh2"
             app:JV_backgroundSizeRatio="45%"
             app:JV_buttonImage="@drawable/anh15"
@@ -105,9 +104,9 @@
 
         <RelativeLayout
             android:id="@+id/layout_right_control"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_marginEnd="@dimen/_32dp"
+            android:layout_marginStart="@dimen/_96dp"
             android:layout_toEndOf="@id/joystickView"
             android:gravity="center">
 
@@ -123,7 +122,7 @@
                     android:id="@+id/btn_light"
                     android:layout_width="@dimen/_120dp"
                     android:layout_height="@dimen/_120dp"
-                    android:layout_marginEnd="@dimen/_36dp"
+                    android:layout_marginEnd="@dimen/_32dp"
                     android:background="@drawable/button_background_border"
                     android:src="@drawable/ic_lightbulb_big" />
 
@@ -147,7 +146,7 @@
                 <FrameLayout
                     android:layout_width="@dimen/_80dp"
                     android:layout_height="@dimen/_80dp"
-                    android:layout_marginEnd="@dimen/_36dp">
+                    android:layout_marginEnd="@dimen/_32dp">
 
                     <ImageButton
                         android:id="@+id/btn_drive"
