@@ -66,7 +66,6 @@ public class VoiceControlActivity extends BaseActivity<VoiceControlPresenter> im
         super.onCreate(savedInstanceState);
 
         mPresenter.createSpeechRecognizer(this);
-        mPresenter.setupRecognizer(this);
     }
 
     @Override

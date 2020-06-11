@@ -25,61 +25,11 @@ import static com.example.robocontrol.ui.voicecontrol.VoiceControlContract.REQUE
 public class VoiceControlPresenter extends BasePresenter<VoiceControlContract.View> implements VoiceControlContract.Presenter, RecognitionListener {
 
     private SpeechRecognizer speech = null;
-    private Intent recognizerIntent;
-
-    @Override
-    public void setupBluetoothConnectListener() {
-        BluetoothUtils.onConnectStatusChangeListener = new BluetoothUtils.OnConnectStatusChangeListener() {
-            @Override
-            public void onConnectStatusChange(BluetoothUtils.ConnectStatus connectStatus) {
-
-            }
-        };
-    }
 
     @Override
     public void createSpeechRecognizer(Context context) {
         speech = SpeechRecognizer.createSpeechRecognizer(context);
         speech.setRecognitionListener(this);
-    }
-
-    @Override
-    public void setupRecognizer(Context context) {
-        String language = "en";
-
-        recognizerIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-        recognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_PREFERENCE, Locale.SIMPLIFIED_CHINESE);
-        recognizerIntent.putExtra(
-                RecognizerIntent.EXTRA_LANGUAGE_MODEL,
-                RecognizerIntent.LANGUAGE_MODEL_FREE_FORM
-        );
-        recognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.SIMPLIFIED_CHINESE);
-
-//        recognizerIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-//        recognizerIntent.putExtra("android.speech.extra.EXTRA_ADDITIONAL_LANGUAGES", new String[]{});
-//        recognizerIntent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE, context.getPackageName());
-//        recognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, language);
-//        recognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_PREFERENCE, language);
-//        recognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-//        recognizerIntent.putExtra(RecognizerIntent.EXTRA_ONLY_RETURN_LANGUAGE_PREFERENCE, language);
-        recognizerIntent.putExtra(RecognizerIntent.EXTRA_PARTIAL_RESULTS, true); // For streaming result
-//        recognizerIntent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS, 2000);
-    }
-
-    @Override
-    public void startListening(Activity activity) {
-        mView.toggleListening(true);
-
-        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "vi");
-        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-        intent.putExtra(RecognizerIntent.EXTRA_PROMPT, activity.getString(R.string.app_name));
-
-        try {
-            activity.startActivityForResult(intent, REQUEST_SPEECH_INPUT);
-        } catch (ActivityNotFoundException a) {
-            mView.showMessage("Error");
-        }
     }
 
     @Override
@@ -152,11 +102,6 @@ public class VoiceControlPresenter extends BasePresenter<VoiceControlContract.Vi
         Log.d("__SP__", "onResults");
         ArrayList<String> matches = results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
         String text = matches != null ? matches.get(0) : "";
-//        StringBuilder text = new StringBuilder();
-//        if (matches != null) {
-//            for (String result : matches)
-//                text.append(result).append("\n");
-//        }
         mView.displaySpeechText(text.trim());
 
         stopListening();

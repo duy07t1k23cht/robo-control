@@ -24,23 +24,14 @@ public class VoiceControlContract {
     }
 
     interface Presenter {
-        void setupBluetoothConnectListener();
 
         void createSpeechRecognizer(Context context);
-
-        void setupRecognizer(Context context);
-
-        void startListening(Activity activity);
 
         void startListening();
 
         void stopListening();
 
         void releaseSpeechRecognizer();
-
-    }
-
-    interface Indicator {
 
     }
 }
