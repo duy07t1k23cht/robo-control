@@ -12,7 +12,6 @@
         android:id="@+id/layout_toolbar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_60dp"
-        android:layout_marginBottom="@dimen/_24dp"
         android:background="#bb000000"
         android:paddingStart="@dimen/_8dp"
         android:paddingEnd="@dimen/_8dp">
@@ -98,7 +97,6 @@
             android:layout_height="@dimen/_220dp"
             android:layout_centerVertical="true"
             android:layout_marginStart="@dimen/_32dp"
-            android:layout_marginEnd="@dimen/_32dp"
             android:background="@drawable/anh2"
             app:JV_backgroundSizeRatio="45%"
             app:JV_buttonImage="@drawable/anh15"
@@ -111,7 +109,7 @@
             android:layout_height="match_parent"
             android:layout_marginEnd="@dimen/_32dp"
             android:layout_toEndOf="@id/joystickView"
-            android:gravity="center_vertical|end">
+            android:gravity="center">
 
             <LinearLayout
                 android:id="@+id/layout_action"
@@ -119,7 +117,6 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/_24dp"
                 android:orientation="horizontal">
 
                 <ImageButton

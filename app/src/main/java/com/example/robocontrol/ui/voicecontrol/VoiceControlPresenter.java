@@ -68,10 +68,13 @@ public class VoiceControlPresenter extends BasePresenter<VoiceControlContract.Vi
 
     @Override
     public void startListening(Activity activity) {
+        mView.toggleListening(true);
+
         Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "vi");
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
         intent.putExtra(RecognizerIntent.EXTRA_PROMPT, activity.getString(R.string.app_name));
+
         try {
             activity.startActivityForResult(intent, REQUEST_SPEECH_INPUT);
         } catch (ActivityNotFoundException a) {
@@ -82,15 +85,25 @@ public class VoiceControlPresenter extends BasePresenter<VoiceControlContract.Vi
     @Override
     public void startListening() {
         if (speech != null) {
+            mView.toggleListening(true);
+
+            Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "vi");
+            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+
             mView.showMessage("Start listening");
             mView.displaySpeechText("Listening...");
-            speech.startListening(recognizerIntent);
+
+            speech.startListening(intent);
         }
     }
 
     @Override
     public void stopListening() {
+
         if (speech != null) {
+            mView.toggleListening(false);
+
             mView.showMessage("Stop listening");
             speech.stopListening();
         }
@@ -144,7 +157,9 @@ public class VoiceControlPresenter extends BasePresenter<VoiceControlContract.Vi
 //            for (String result : matches)
 //                text.append(result).append("\n");
 //        }
-        mView.displaySpeechText(text.toString().trim());
+        mView.displaySpeechText(text.trim());
+
+        stopListening();
     }
 
     @Override

@@ -4,13 +4,11 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.speech.RecognizerIntent;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
@@ -51,15 +49,12 @@ public class VoiceControlActivity extends BaseActivity<VoiceControlPresenter> im
     @Override
     public void implementClickListener() {
         ivBack.setOnClickListener(this);
-
         toggleSpeak.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    ivListen.setImageDrawable(getDrawable(R.drawable.ic_voice_big_listening));
-                    startListening();
+                    checkRecordPermission();
                 } else {
-                    ivListen.setImageDrawable(getDrawable(R.drawable.ic_voice_big));
                     mPresenter.stopListening();
                 }
             }
@@ -81,7 +76,8 @@ public class VoiceControlActivity extends BaseActivity<VoiceControlPresenter> im
         switch (requestCode) {
             case VoiceControlContract.REQUEST_RECORD_PERMISSION:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    mPresenter.startListening(VoiceControlActivity.this);
+//                    mPresenter.startListening(VoiceControlActivity.this);
+                    mPresenter.startListening();
                 } else {
                     showMessage("Permission Denied!");
                 }
@@ -118,7 +114,18 @@ public class VoiceControlActivity extends BaseActivity<VoiceControlPresenter> im
     }
 
     @Override
-    public void startListening() {
+    public void toggleListening(boolean isListening) {
+        if (isListening) {
+            ivListen.setImageDrawable(getDrawable(R.drawable.ic_voice_big_listening));
+            if (!toggleSpeak.isChecked()) toggleSpeak.setChecked(true);
+        } else {
+            ivListen.setImageDrawable(getDrawable(R.drawable.ic_voice_big));
+            if (toggleSpeak.isChecked()) toggleSpeak.setChecked(false);
+        }
+    }
+
+    @Override
+    public void checkRecordPermission() {
         ActivityCompat.requestPermissions(
                 VoiceControlActivity.this,
                 new String[]{Manifest.permission.RECORD_AUDIO},
@@ -141,10 +148,10 @@ public class VoiceControlActivity extends BaseActivity<VoiceControlPresenter> im
                 onBackPressed();
                 break;
 
-            case R.id.toggle_speak:
-
+            // Button listen
+            case R.id.iv_listen:
+                checkRecordPermission();
                 break;
-
         }
     }
 }

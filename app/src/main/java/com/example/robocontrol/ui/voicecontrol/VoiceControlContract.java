@@ -14,11 +14,13 @@ public class VoiceControlContract {
     public final static int REQUEST_SPEECH_INPUT = 124;
 
     interface View extends BaseView {
-        void startListening();
+        void checkRecordPermission();
 
         void showMessage(String message);
 
         void displaySpeechText(String text);
+
+        void toggleListening(boolean isListening);
     }
 
     interface Presenter {
@@ -35,6 +37,7 @@ public class VoiceControlContract {
         void stopListening();
 
         void releaseSpeechRecognizer();
+
     }
 
     interface Indicator {
