@@ -35,21 +35,9 @@ public class CommandUtils {
             put("lùi", B);
             put("trái", L);
             put("phải", R);
-//            put("", C);
-//            put("", M);
-//            put("", P);
-//            put("", E);
-//            put("", S);
-//            put("", n);
-//            put("", N);
-//            put("", y);
-//            put("", Y);
-//            put("", t);
-//            put("", T);
-//            put("", u);
-//            put("", U);
-//            put("", o);
-//            put("", O);
+            put("bật đèn", Y);
+            put("tắt đèn", y);
+            put("dừng", S);
         }
     };
 

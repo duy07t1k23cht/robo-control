@@ -56,6 +56,13 @@ public class VoiceControlActivity extends BaseActivity<VoiceControlPresenter> im
         ivBack.setOnClickListener(this);
         toggleSpeak.setOnCheckedChangeListener(this);
         btnExecuteCommand.setOnClickListener(this);
+        btnExecuteCommand.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                mPresenter.resetCommand();
+                return true;
+            }
+        });
     }
 
     @Override

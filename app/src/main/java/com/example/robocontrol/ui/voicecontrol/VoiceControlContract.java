@@ -36,6 +36,8 @@ public class VoiceControlContract {
 
         void releaseSpeechRecognizer();
 
+        void resetCommand();
+
         void executeCommand();
 
     }

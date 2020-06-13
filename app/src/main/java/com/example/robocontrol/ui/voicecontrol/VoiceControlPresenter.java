@@ -22,11 +22,20 @@ public class VoiceControlPresenter extends BasePresenter<VoiceControlContract.Vi
     private SpeechRecognizer speech = null;
 
     private String command = "";
+    private String commandCode = "";
 
     @Override
     public void createSpeechRecognizer(Context context) {
         speech = SpeechRecognizer.createSpeechRecognizer(context);
         speech.setRecognitionListener(this);
+    }
+
+    @Override
+    public void resetCommand() {
+        command = "";
+        commandCode = "";
+        mView.displayCommand(command);
+        mView.displaySpeechText("");
     }
 
     @Override
@@ -45,12 +54,12 @@ public class VoiceControlPresenter extends BasePresenter<VoiceControlContract.Vi
 
     @Override
     public void stopListening() {
-        mView.animateRms(0f);
         Log.d("__VOICE__", "stopListening");
         if (speech != null) {
             mView.toggleListening(false);
             speech.stopListening();
         }
+        mView.animateRms(0f);
     }
 
     @Override
@@ -100,6 +109,10 @@ public class VoiceControlPresenter extends BasePresenter<VoiceControlContract.Vi
         mView.displaySpeechText(text.trim());
 
         command += text.trim() + " ";
+        commandCode += CommandUtils.toCommand(text.trim()).trim();
+
+        mView.displayCommand(command);
+        mView.showMessage(commandCode);
     }
 
     @Override

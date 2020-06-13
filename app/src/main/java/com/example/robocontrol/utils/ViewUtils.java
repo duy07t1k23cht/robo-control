@@ -22,7 +22,7 @@ public class ViewUtils {
 
     public static void toast(Context context, String message) {
         if (message != null && !message.isEmpty())
-            Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, message.trim(), Toast.LENGTH_SHORT).show();
     }
 
     public static void toast(Context context, @StringRes int stringResID) {
