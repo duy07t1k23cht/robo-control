@@ -34,6 +34,7 @@ public class VoiceControlPresenter extends BasePresenter<VoiceControlContract.Vi
 
     @Override
     public void startListening() {
+        Log.d("__VOICE__", "startListening");
         if (speech != null) {
             mView.toggleListening(true);
 
@@ -41,7 +42,6 @@ public class VoiceControlPresenter extends BasePresenter<VoiceControlContract.Vi
             intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "vi");
             intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
 
-            mView.showMessage("Start listening");
             mView.displaySpeechText("Listening...");
 
             speech.startListening(intent);
@@ -50,11 +50,10 @@ public class VoiceControlPresenter extends BasePresenter<VoiceControlContract.Vi
 
     @Override
     public void stopListening() {
-
+        mView.animateRms(0f);
+        Log.d("__VOICE__", "stopListening");
         if (speech != null) {
             mView.toggleListening(false);
-
-            mView.showMessage("Stop listening");
             speech.stopListening();
         }
     }
@@ -74,12 +73,11 @@ public class VoiceControlPresenter extends BasePresenter<VoiceControlContract.Vi
 
     @Override
     public void onBeginningOfSpeech() {
-        Log.d("__SP__", "onBeginningOfSpeech");
     }
 
     @Override
     public void onRmsChanged(float rmsdB) {
-
+        mView.animateRms(rmsdB);
     }
 
     @Override
@@ -89,27 +87,27 @@ public class VoiceControlPresenter extends BasePresenter<VoiceControlContract.Vi
 
     @Override
     public void onEndOfSpeech() {
-        Log.d("__SP__", "onEndOfSpeech");
-    }
-
-    @Override
-    public void onError(int error) {
-        Log.d("__SP__", "onError: " + getErrorText(error));
-    }
-
-    @Override
-    public void onResults(Bundle results) {
-        Log.d("__SP__", "onResults");
-        ArrayList<String> matches = results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
-        String text = matches != null ? matches.get(0) : "";
-        mView.displaySpeechText(text.trim());
-
+        Log.d("__VOICE__", "onEndOfSpeech");
         stopListening();
     }
 
     @Override
+    public void onError(int error) {
+        Log.d("__VOICE__", "onError");
+        mView.showMessage(getErrorText(error));
+        mView.displaySpeechText("");
+    }
+
+    @Override
+    public void onResults(Bundle results) {
+        Log.d("__VOICE__", "onResults");
+        ArrayList<String> matches = results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
+        String text = matches != null ? matches.get(0) : "";
+        mView.displaySpeechText(text.trim());
+    }
+
+    @Override
     public void onPartialResults(Bundle partialResults) {
-        Log.d("__SP__", "onPartialResults");
     }
 
     @Override

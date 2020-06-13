@@ -21,6 +21,8 @@ public class VoiceControlContract {
         void displaySpeechText(String text);
 
         void toggleListening(boolean isListening);
+
+        void animateRms(float rmsdB);
     }
 
     interface Presenter {

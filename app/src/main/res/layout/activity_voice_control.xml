@@ -122,9 +122,18 @@
         </LinearLayout>
 
         <ImageView
+            android:id="@+id/iv_rms"
+            android:layout_width="@dimen/_96dp"
+            android:layout_height="@dimen/_96dp"
+            android:layout_gravity="center_vertical|end"
+            android:layout_marginEnd="@dimen/_48dp"
+            android:background="@drawable/bg_button_speech_transparent"
+            android:padding="@dimen/_24dp" />
+
+        <ImageView
             android:id="@+id/iv_listen"
-            android:layout_width="96dp"
-            android:layout_height="96dp"
+            android:layout_width="@dimen/_96dp"
+            android:layout_height="@dimen/_96dp"
             android:layout_gravity="center_vertical|end"
             android:layout_marginEnd="@dimen/_48dp"
             android:background="@drawable/bg_button_speech"
@@ -134,8 +143,8 @@
         <ToggleButton
             android:id="@+id/toggle_speak"
             style="@style/toggleButton"
-            android:layout_width="96dp"
-            android:layout_height="96dp"
+            android:layout_width="@dimen/_96dp"
+            android:layout_height="@dimen/_96dp"
             android:layout_gravity="center_vertical|end"
             android:layout_marginEnd="@dimen/_48dp"
             android:background="#00000000" />

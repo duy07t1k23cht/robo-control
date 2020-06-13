@@ -22,9 +22,9 @@ import java.util.ArrayList;
 
 import static com.example.robocontrol.utils.ViewUtils.toast;
 
-public class VoiceControlActivity extends BaseActivity<VoiceControlPresenter> implements VoiceControlContract.View, View.OnClickListener {
+public class VoiceControlActivity extends BaseActivity<VoiceControlPresenter> implements VoiceControlContract.View, View.OnClickListener, CompoundButton.OnCheckedChangeListener {
 
-    private ImageView ivBack, ivListen;
+    private ImageView ivBack, ivListen, ivRms;
     private ToggleButton toggleSpeak;
     private TextView tvInput;
 
@@ -42,6 +42,7 @@ public class VoiceControlActivity extends BaseActivity<VoiceControlPresenter> im
     public void initViewComponents() {
         ivBack = findViewById(R.id.iv_back);
         ivListen = findViewById(R.id.iv_listen);
+        ivRms = findViewById(R.id.iv_rms);
         toggleSpeak = findViewById(R.id.toggle_speak);
         tvInput = findViewById(R.id.tv_input);
     }
@@ -49,16 +50,7 @@ public class VoiceControlActivity extends BaseActivity<VoiceControlPresenter> im
     @Override
     public void implementClickListener() {
         ivBack.setOnClickListener(this);
-        toggleSpeak.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    checkRecordPermission();
-                } else {
-                    mPresenter.stopListening();
-                }
-            }
-        });
+        toggleSpeak.setOnCheckedChangeListener(this);
     }
 
     @Override
@@ -75,7 +67,6 @@ public class VoiceControlActivity extends BaseActivity<VoiceControlPresenter> im
         switch (requestCode) {
             case VoiceControlContract.REQUEST_RECORD_PERMISSION:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//                    mPresenter.startListening(VoiceControlActivity.this);
                     mPresenter.startListening();
                 } else {
                     showMessage("Permission Denied!");
@@ -90,7 +81,6 @@ public class VoiceControlActivity extends BaseActivity<VoiceControlPresenter> im
 
         switch (requestCode) {
             case VoiceControlContract.REQUEST_SPEECH_INPUT:
-                mPresenter.stopListening();
                 if (resultCode == RESULT_OK && data != null) {
                     ArrayList<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
                     if (result != null)
@@ -114,6 +104,7 @@ public class VoiceControlActivity extends BaseActivity<VoiceControlPresenter> im
 
     @Override
     public void toggleListening(boolean isListening) {
+        toggleSpeak.setOnCheckedChangeListener(null);
         if (isListening) {
             ivListen.setImageDrawable(getDrawable(R.drawable.ic_voice_big_listening));
             if (!toggleSpeak.isChecked()) toggleSpeak.setChecked(true);
@@ -121,6 +112,14 @@ public class VoiceControlActivity extends BaseActivity<VoiceControlPresenter> im
             ivListen.setImageDrawable(getDrawable(R.drawable.ic_voice_big));
             if (toggleSpeak.isChecked()) toggleSpeak.setChecked(false);
         }
+        toggleSpeak.setOnCheckedChangeListener(this);
+    }
+
+    @Override
+    public void animateRms(float rmsdB) {
+        float dB = rmsdB > 0 ? rmsdB : 0;
+        ivRms.setScaleX((100 + dB * 10) / 100);
+        ivRms.setScaleY((100 + dB * 10) / 100);
     }
 
     @Override
@@ -151,6 +150,15 @@ public class VoiceControlActivity extends BaseActivity<VoiceControlPresenter> im
             case R.id.iv_listen:
                 checkRecordPermission();
                 break;
+        }
+    }
+
+    @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        if (isChecked) {
+            checkRecordPermission();
+        } else {
+            mPresenter.stopListening();
         }
     }
 }
