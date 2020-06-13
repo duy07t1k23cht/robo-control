@@ -39,7 +39,7 @@ public class BluetoothUtils {
 
     /**
      * @param bluetoothDevice: Deivce we want to connect to.
-     * This method try to connect with a bluetooth device which is passed as paramater.
+     *                         This method try to connect with a bluetooth device which is passed as paramater.
      */
     public static void connectToDevice(BluetoothDevice bluetoothDevice) {
         connectThread = new ConnectThread(bluetoothDevice);
@@ -93,11 +93,17 @@ public class BluetoothUtils {
 
     /**
      * This method try to send a message of type String to the connected device
+     *
      * @param message: Message that we want to send
      */
     public static void sendMessage(String message) {
         if (connectThread != null)
             connectThread.sendCharacter(message);
+    }
+
+    public static void sendMessage(char message) {
+        if (connectThread != null)
+            connectThread.sendCharacter(String.valueOf(message));
     }
 
     /**

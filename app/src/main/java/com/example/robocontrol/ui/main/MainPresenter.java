@@ -8,8 +8,19 @@ import androidx.annotation.NonNull;
 
 import com.example.robocontrol.base.BasePresenter;
 import com.example.robocontrol.utils.BluetoothUtils;
+import com.example.robocontrol.utils.CommandUtils.*;
 
 import java.util.Set;
+
+import static com.example.robocontrol.utils.CommandUtils.B;
+import static com.example.robocontrol.utils.CommandUtils.C;
+import static com.example.robocontrol.utils.CommandUtils.E;
+import static com.example.robocontrol.utils.CommandUtils.F;
+import static com.example.robocontrol.utils.CommandUtils.L;
+import static com.example.robocontrol.utils.CommandUtils.M;
+import static com.example.robocontrol.utils.CommandUtils.P;
+import static com.example.robocontrol.utils.CommandUtils.R;
+import static com.example.robocontrol.utils.CommandUtils.S;
 
 /**
  * Created by Duy M. Nguyen on 5/14/2020.
@@ -113,34 +124,34 @@ public class MainPresenter extends BasePresenter<MainContract.View> implements M
     @Override
     public void processJoystickMovement(int angle, int strength) {
         if (angle > 0 && angle < 22) {
-            sendMessage("R");
+            sendMessage(R);
         }
         if (angle == 0) {
-            sendMessage("S");
+            sendMessage(S);
         }
         if (angle >= 22 && angle < 67) {
-            sendMessage("M");
+            sendMessage(M);
         }
         if (angle >= 67 && angle < 112) {
-            sendMessage("F");
+            sendMessage(F);
         }
         if (angle >= 112 && angle < 157) {
-            sendMessage("C");
+            sendMessage(C);
         }
         if (angle >= 157 && angle < 202) {
-            sendMessage("L");
+            sendMessage(L);
         }
         if (angle >= 202 && angle < 250) {
-            sendMessage("E");
+            sendMessage(E);
         }
         if (angle >= 250 && angle < 295) {
-            sendMessage("B");
+            sendMessage(B);
         }
         if (angle >= 295 && angle < 330) {
-            sendMessage("P");
+            sendMessage(P);
         }
         if (angle >= 330 && angle < 360) {
-            sendMessage("R");
+            sendMessage(R);
         }
     }
 

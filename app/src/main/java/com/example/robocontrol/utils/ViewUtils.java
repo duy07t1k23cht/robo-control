@@ -21,7 +21,8 @@ public class ViewUtils {
     }
 
     public static void toast(Context context, String message) {
-        Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+        if (message != null && !message.isEmpty())
+            Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
     }
 
     public static void toast(Context context, @StringRes int stringResID) {

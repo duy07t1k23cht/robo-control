@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.view.View;
 import android.widget.CompoundButton;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ToggleButton;
@@ -26,7 +27,8 @@ public class VoiceControlActivity extends BaseActivity<VoiceControlPresenter> im
 
     private ImageView ivBack, ivListen, ivRms;
     private ToggleButton toggleSpeak;
-    private TextView tvInput;
+    private ImageButton btnExecuteCommand;
+    private TextView tvInput, tvCommand;
 
     @Override
     protected int getLayoutID() {
@@ -44,13 +46,16 @@ public class VoiceControlActivity extends BaseActivity<VoiceControlPresenter> im
         ivListen = findViewById(R.id.iv_listen);
         ivRms = findViewById(R.id.iv_rms);
         toggleSpeak = findViewById(R.id.toggle_speak);
+        btnExecuteCommand = findViewById(R.id.btn_execute_command);
         tvInput = findViewById(R.id.tv_input);
+        tvCommand = findViewById(R.id.tv_command);
     }
 
     @Override
     public void implementClickListener() {
         ivBack.setOnClickListener(this);
         toggleSpeak.setOnCheckedChangeListener(this);
+        btnExecuteCommand.setOnClickListener(this);
     }
 
     @Override
@@ -76,23 +81,6 @@ public class VoiceControlActivity extends BaseActivity<VoiceControlPresenter> im
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        switch (requestCode) {
-            case VoiceControlContract.REQUEST_SPEECH_INPUT:
-                if (resultCode == RESULT_OK && data != null) {
-                    ArrayList<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
-                    if (result != null)
-                        displaySpeechText(result.get(0));
-                    else
-                        displaySpeechText("Null result");
-                }
-                break;
-        }
-    }
-
-    @Override
     public void showMessage(String message) {
         toast(this, message);
     }
@@ -100,6 +88,11 @@ public class VoiceControlActivity extends BaseActivity<VoiceControlPresenter> im
     @Override
     public void displaySpeechText(String text) {
         tvInput.setText(text);
+    }
+
+    @Override
+    public void displayCommand(String command) {
+        tvCommand.setText(command);
     }
 
     @Override
@@ -149,6 +142,11 @@ public class VoiceControlActivity extends BaseActivity<VoiceControlPresenter> im
             // Button listen
             case R.id.iv_listen:
                 checkRecordPermission();
+                break;
+
+            // Button execute command
+            case R.id.btn_execute_command:
+                mPresenter.executeCommand();
                 break;
         }
     }

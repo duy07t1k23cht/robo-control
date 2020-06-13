@@ -1,7 +1,5 @@
 package com.example.robocontrol.ui.voicecontrol;
 
-import android.app.Activity;
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,14 +8,11 @@ import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
 import android.util.Log;
 
-import com.example.robocontrol.R;
 import com.example.robocontrol.base.BasePresenter;
 import com.example.robocontrol.utils.BluetoothUtils;
+import com.example.robocontrol.utils.CommandUtils;
 
 import java.util.ArrayList;
-import java.util.Locale;
-
-import static com.example.robocontrol.ui.voicecontrol.VoiceControlContract.REQUEST_SPEECH_INPUT;
 
 /**
  * Created by Duy M. Nguyen on 5/23/2020.
@@ -25,6 +20,8 @@ import static com.example.robocontrol.ui.voicecontrol.VoiceControlContract.REQUE
 public class VoiceControlPresenter extends BasePresenter<VoiceControlContract.View> implements VoiceControlContract.Presenter, RecognitionListener {
 
     private SpeechRecognizer speech = null;
+
+    private String command = "";
 
     @Override
     public void createSpeechRecognizer(Context context) {
@@ -41,8 +38,6 @@ public class VoiceControlPresenter extends BasePresenter<VoiceControlContract.Vi
             Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
             intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "vi");
             intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-
-            mView.displaySpeechText("Listening...");
 
             speech.startListening(intent);
         }
@@ -95,7 +90,6 @@ public class VoiceControlPresenter extends BasePresenter<VoiceControlContract.Vi
     public void onError(int error) {
         Log.d("__VOICE__", "onError");
         mView.showMessage(getErrorText(error));
-        mView.displaySpeechText("");
     }
 
     @Override
@@ -104,10 +98,23 @@ public class VoiceControlPresenter extends BasePresenter<VoiceControlContract.Vi
         ArrayList<String> matches = results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
         String text = matches != null ? matches.get(0) : "";
         mView.displaySpeechText(text.trim());
+
+        command += text.trim() + " ";
     }
 
     @Override
     public void onPartialResults(Bundle partialResults) {
+    }
+
+    @Override
+    public void executeCommand() {
+        String tmp = "Tiến Lùi Xuống trái phải ha ha vcl xyz trái trái tiến phải";
+        String cmd = CommandUtils.toCommand(command);
+        mView.showMessage(cmd);
+        for (char character : cmd.toCharArray()) {
+            BluetoothUtils.sendMessage(character);
+        }
+//        mView.showMessage(CommandUtils.toCommand("Tiến Lùi Xuống Trái Phải"));
     }
 
     @Override

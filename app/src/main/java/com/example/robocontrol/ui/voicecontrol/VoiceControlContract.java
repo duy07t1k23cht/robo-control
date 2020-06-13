@@ -11,7 +11,6 @@ import com.example.robocontrol.base.BaseView;
 public class VoiceControlContract {
 
     public final static int REQUEST_RECORD_PERMISSION = 123;
-    public final static int REQUEST_SPEECH_INPUT = 124;
 
     interface View extends BaseView {
         void checkRecordPermission();
@@ -19,6 +18,8 @@ public class VoiceControlContract {
         void showMessage(String message);
 
         void displaySpeechText(String text);
+
+        void displayCommand(String command);
 
         void toggleListening(boolean isListening);
 
@@ -34,6 +35,8 @@ public class VoiceControlContract {
         void stopListening();
 
         void releaseSpeechRecognizer();
+
+        void executeCommand();
 
     }
 }
