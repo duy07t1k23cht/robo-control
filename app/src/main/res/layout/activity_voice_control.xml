@@ -78,7 +78,8 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/_4dp"
                 android:orientation="horizontal"
-                android:padding="@dimen/_4dp">
+                android:padding="@dimen/_4dp"
+                android:visibility="gone">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -101,7 +102,8 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/_4dp"
                 android:orientation="horizontal"
-                android:padding="@dimen/_4dp">
+                android:padding="@dimen/_4dp"
+                android:visibility="gone">
 
                 <TextView
                     android:layout_width="wrap_content"

@@ -118,8 +118,8 @@ public class VoiceControlActivity extends BaseActivity<VoiceControlPresenter> im
     @Override
     public void animateRms(float rmsdB) {
         float dB = rmsdB > 0 ? rmsdB : 0;
-        ivRms.setScaleX((100 + dB * 10) / 100);
-        ivRms.setScaleY((100 + dB * 10) / 100);
+        ivRms.setScaleX((100 + dB * 8) / 100);
+        ivRms.setScaleY((100 + dB * 8) / 100);
     }
 
     @Override
