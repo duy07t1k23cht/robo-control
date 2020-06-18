@@ -109,7 +109,7 @@ public class VoiceControlPresenter extends BasePresenter<VoiceControlContract.Vi
         mView.displaySpeechText(text.trim());
 
         command += text.trim() + " ";
-        commandCode += CommandUtils.toCommand(text.trim()).trim();
+        commandCode += CommandUtils.toSingleCommand(text.trim());
 
         mView.displayCommand(command);
         mView.showMessage(commandCode);
@@ -121,13 +121,11 @@ public class VoiceControlPresenter extends BasePresenter<VoiceControlContract.Vi
 
     @Override
     public void executeCommand() {
-        String tmp = "Tiến Lùi Xuống trái phải ha ha vcl xyz trái trái tiến phải";
-        String cmd = CommandUtils.toCommand(command);
+        String cmd = CommandUtils.toSingleCommand(command);
         mView.showMessage(cmd);
         for (char character : cmd.toCharArray()) {
             BluetoothUtils.sendMessage(character);
         }
-//        mView.showMessage(CommandUtils.toCommand("Tiến Lùi Xuống Trái Phải"));
     }
 
     @Override

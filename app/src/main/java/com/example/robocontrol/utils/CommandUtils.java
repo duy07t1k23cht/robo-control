@@ -22,8 +22,8 @@ public class CommandUtils {
     public final static String N = "N";
     public final static String y = "y";
     public final static String Y = "Y";
-    public final static String t = "y";
-    public final static String T = "Y";
+    public final static String t = "t";
+    public final static String T = "T";
     public final static String u = "u";
     public final static String U = "U";
     public final static String o = "o";
@@ -31,15 +31,29 @@ public class CommandUtils {
 
     public static Map<String, String> command = new HashMap<String, String>() {
         {
+            // Tất cả các câu lệnh viết bằng chữ thường
+
+            // Tiếng Việt
             put("tiến", F);
+            put("tiến lên", F);
             put("lùi", B);
-            put("trái", L);
-            put("phải", R);
+            put("lùi lại", B);
+            put("quay trái", L);
+            put("quay phải", R);
             put("bật đèn", Y);
             put("tắt đèn", y);
+            put("bật còi", T);
+            put("tắt còi", t);
             put("dừng", S);
+
+            // Tiếng Anh
         }
     };
+
+    public static String toSingleCommand(String string) {
+        String singleCommand = command.get(string.trim());
+        return singleCommand == null ? "" : singleCommand;
+    }
 
     public static String toCommand(String string) {
         StringBuilder finalCmd = new StringBuilder();
