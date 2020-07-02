@@ -8,7 +8,6 @@ import androidx.annotation.NonNull;
 
 import com.example.robocontrol.base.BasePresenter;
 import com.example.robocontrol.utils.BluetoothUtils;
-import com.example.robocontrol.utils.CommandUtils.*;
 
 import java.util.Set;
 

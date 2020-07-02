@@ -25,10 +25,12 @@ public class BluetoothUtils {
         void onConnectStatusChange(ConnectStatus connectStatus);
     }
 
+    private static BluetoothDevice bluetoothDevice;
+
     /**
      * A background thread where execute tasks like connecting with other device, disconnecting, send messages,...
      */
-    public static ConnectThread connectThread;
+    private static ConnectThread connectThread;
 
     /**
      * The name says everything
@@ -38,12 +40,22 @@ public class BluetoothUtils {
     private static BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
     /**
-     * @param bluetoothDevice: Deivce we want to connect to.
-     *                         This method try to connect with a bluetooth device which is passed as paramater.
+     * @param device: Deivce we want to connect to.
+     *                This method try to connect with a bluetooth device which is passed as paramater.
      */
-    public static void connectToDevice(BluetoothDevice bluetoothDevice) {
+    public static void connectToDevice(BluetoothDevice device) {
+        bluetoothDevice = device;
         connectThread = new ConnectThread(bluetoothDevice);
         connectThread.start();
+    }
+
+    public static void reconnect() {
+        if (bluetoothDevice != null) {
+            connectThread = new ConnectThread(bluetoothDevice);
+            connectThread.start();
+        } else {
+            Log.d("__XX__", "Cant connect to device");
+        }
     }
 
     /**

@@ -69,6 +69,7 @@ public class VoiceControlActivity extends BaseActivity<VoiceControlPresenter> im
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        mPresenter.reconnect();
         mPresenter.createSpeechRecognizer(this);
     }
 

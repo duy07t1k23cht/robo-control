@@ -28,6 +28,8 @@ public class VoiceControlContract {
 
     interface Presenter {
 
+        void reconnect();
+
         void createSpeechRecognizer(Context context);
 
         void startListening();

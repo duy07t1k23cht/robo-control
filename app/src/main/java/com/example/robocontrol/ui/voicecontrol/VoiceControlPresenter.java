@@ -25,6 +25,11 @@ public class VoiceControlPresenter extends BasePresenter<VoiceControlContract.Vi
     private String commandCode = "";
 
     @Override
+    public void reconnect() {
+        BluetoothUtils.reconnect();
+    }
+
+    @Override
     public void createSpeechRecognizer(Context context) {
         speech = SpeechRecognizer.createSpeechRecognizer(context);
         speech.setRecognitionListener(this);
