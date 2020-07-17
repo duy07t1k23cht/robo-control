@@ -8,6 +8,7 @@ import com.example.robocontrol.base.BaseView;
 /**
  * Created by Duy M. Nguyen on 5/23/2020.
  */
+
 public class VoiceControlContract {
 
     public final static int REQUEST_RECORD_PERMISSION = 123;
@@ -27,7 +28,6 @@ public class VoiceControlContract {
     }
 
     interface Presenter {
-
         void reconnect();
 
         void createSpeechRecognizer(Context context);
@@ -41,6 +41,5 @@ public class VoiceControlContract {
         void resetCommand();
 
         void executeCommand();
-
     }
 }

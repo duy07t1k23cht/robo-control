@@ -124,6 +124,7 @@ public class BluetoothUtils {
     private static class ConnectThread extends Thread {
         private final BluetoothSocket mmSocket;
 
+        // Constructor
         public ConnectThread(BluetoothDevice device) {
             // Use a temporary object that is later assigned to mmSocket
             // because mmSocket is final.

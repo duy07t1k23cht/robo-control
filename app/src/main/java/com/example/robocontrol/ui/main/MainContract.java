@@ -11,6 +11,7 @@ import com.example.robocontrol.base.BaseView;
 /**
  * Created by Duy M. Nguyen on 5/14/2020.
  */
+
 public class MainContract {
 
     public final static int CONNECT_DEVICE_REQ = 123;
